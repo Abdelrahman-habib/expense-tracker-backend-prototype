@@ -1,0 +1,67 @@
+server:
+  port: 8080
+  timeout:
+    read: 15s
+    write: 15s
+    idle: 60s
+    request: 60s
+  middleware:
+    rate_limit:
+      requests_per_minute: 100
+      window_length: 1m
+    allowed_origins:
+      - http://localhost:3000
+    allowed_methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allowed_headers:
+      - Authorization
+      - Content-Type
+    exposed_headers:
+      - Content-Length
+    allow_credentials: true
+    max_age: 300
+
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  name: expense_tracker
+  ssl_mode: disable
+  max_conns: 10
+  min_conns: 2
+  max_lifetime: 1h
+  max_idle_time: 30m
+  health_check: 1m
+
+logger:
+  environment: development
+  level: debug
+
+auth:
+  jwt:
+    access_token_secret: your-access-token-secret-here
+    refresh_token_secret: your-refresh-token-secret-here
+    access_token_ttl: 15m
+    refresh_token_ttl: 7d
+  oauth:
+    google:
+      client_id: your-google-client-id
+      client_secret: your-google-client-secret
+      redirect_url: http://localhost:8080/auth/google/callback
+      default_scopes:
+        - https://www.googleapis.com/auth/userinfo.email
+        - https://www.googleapis.com/auth/userinfo.profile
+    github:
+      client_id: your-github-client-id
+      client_secret: your-github-client-secret
+      redirect_url: http://localhost:8080/auth/github/callback
+  cookie:
+    domain: localhost
+    path: /
+    secure: true
+    same_site: strict

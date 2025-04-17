@@ -1,0 +1,3335 @@
+{
+  "components": {
+    "schemas": {
+      "data": {
+        "title": "data Schema",
+        "properties": { "data": { "$ref": "#/components/schemas/Wallet" } },
+          "title": "properties Schema",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse Schema",
+        "description": "Application error response",
+        "properties": {
+          "code": {
+            "enum": [400, 401, 404, 500, 502, 422, 403, 409, 429, 501],
+            "example": 400,
+            "type": "integer"
+          },
+          "error": { "example": "field: required", "type": "string" },
+          "message": {
+            "enum": [
+              "Invalid request parameters",
+              "Authorization failed",
+              "Resource not found",
+              "Internal server error",
+              "Database error occurred",
+              "External service error",
+              "Error rendering response",
+              "Access forbidden",
+              "Resource conflict",
+              "Too many requests",
+              "Unsupported operation"
+            ],
+            "example": "Invalid request parameters",
+            "type": "string"
+          },
+          "type": { "$ref": "#/components/schemas/ErrorType" }
+        },
+        "type": "object"
+      },
+      "ErrorType": {
+        "title": "ErrorType Schema",
+        "type": "string",
+        "x-enum-varnames": [
+          "ErrorTypeValidation",
+          "ErrorTypeDatabase",
+          "ErrorTypeAuthorization",
+          "ErrorTypeNotFound",
+          "ErrorTypeInternal",
+          "ErrorTypeExternalService",
+          "ErrorTypeRender",
+          "ErrorTypeForbidden",
+          "ErrorTypeConflict",
+          "ErrorTypeRateLimit",
+          "ErrorTypeUnsupported"
+        ]
+      },
+      "Response": {
+        "title": "Response Schema",
+        "allOf": [{ "$ref": "#/components/schemas/data" }],
+        "description": "Standard API response wrapper",
+        "properties": {
+          "data": {},
+          "message": {
+            "enum": [
+              "Success",
+              "Resource created successfully",
+              "Resource updated successfully",
+              "Resource deleted successfully"
+            ],
+            "example": "Success",
+            "type": "string"
+          },
+          "meta": {
+            "properties": {
+              "count": { "type": "integer" },
+              "limit": { "type": "integer" },
+              "next_token": { "type": "string" },
+              "query": { "type": "string" }
+            },
+            "type": "object"
+          },
+          "status": {
+            "enum": [200, 202, 204],
+            "example": 200,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Contact": {
+        "title": "Contact Schema",
+        "description": "Contact information including personal details, contact methods, address and tags",
+        "properties": {
+          "addressLine1": {
+            "example": "123 Main St",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "addressLine2": {
+            "example": "Suite 100",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "city": { "example": "New York", "maxLength": 255, "type": "string" },
+          "contactId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "country": {
+            "example": "US",
+            "format": "iso-3166-1-alpha-2",
+            "type": "string"
+          },
+          "createdAt": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "email": {
+            "example": "john.doe@example.com",
+            "format": "email",
+            "type": "string"
+          },
+          "name": {
+            "example": "John Doe",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "phone": {
+            "example": "+1-555-123-4567",
+            "format": "phone",
+            "maxLength": 20,
+            "type": "string"
+          },
+          "stateProvince": {
+            "example": "NY",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "tags": {
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ],
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "updatedAt": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "userId": {
+            "example": "123e4567-e89b-12d3-a456-426614174001",
+            "format": "uuid",
+            "type": "string"
+          },
+          "zipPostalCode": {
+            "example": "10001",
+            "format": "zip-code",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ContactCreatePayload": {
+        "title": "ContactCreatePayload Schema",
+        "description": "Payload for creating a new contact",
+        "properties": {
+          "addressLine1": {
+            "example": "123 Main St",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "addressLine2": {
+            "example": "Suite 100",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "city": { "example": "New York", "maxLength": 255, "type": "string" },
+          "country": {
+            "example": "US",
+            "format": "iso-3166-1-alpha-2",
+            "type": "string"
+          },
+          "email": {
+            "example": "john.doe@example.com",
+            "format": "email",
+            "type": "string"
+          },
+          "name": {
+            "example": "John Doe",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "phone": {
+            "example": "+1-555-123-4567",
+            "format": "phone",
+            "maxLength": 20,
+            "type": "string"
+          },
+          "stateProvince": {
+            "example": "NY",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "tags": {
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ],
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "zipPostalCode": {
+            "example": "10001",
+            "format": "zip-code",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ContactUpdatePayload": {
+        "title": "ContactUpdatePayload Schema",
+        "description": "Payload for updating an existing contact",
+        "properties": {
+          "addressLine1": {
+            "example": "123 Main St",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "addressLine2": {
+            "example": "Suite 100",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "city": { "example": "New York", "maxLength": 255, "type": "string" },
+          "country": {
+            "example": "US",
+            "format": "iso-3166-1-alpha-2",
+            "type": "string"
+          },
+          "email": {
+            "example": "john.doe@example.com",
+            "format": "email",
+            "type": "string"
+          },
+          "name": {
+            "example": "John Doe",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "phone": {
+            "example": "+1-555-123-4567",
+            "format": "phone",
+            "maxLength": 20,
+            "type": "string"
+          },
+          "stateProvince": {
+            "example": "NY",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "tags": {
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ],
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "zipPostalCode": {
+            "example": "10001",
+            "format": "zip-code",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "GoogleContact": {
+        "title": "GoogleContact Schema",
+        "properties": {
+          "city": { "type": "string" },
+          "country": { "type": "string" },
+          "country_code": { "type": "string" },
+          "email_addresses": {
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "extended_address": { "type": "string" },
+          "name": { "type": "string" },
+          "phone_numbers": {
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "postal_code": { "type": "string" },
+          "region": { "type": "string" },
+          "street_address": { "type": "string" }
+        },
+        "type": "object"
+      },
+      "PaginatedGoogleContacts": {
+        "title": "PaginatedGoogleContacts Schema",
+        "properties": {
+          "contacts": {
+            "items": { "$ref": "#/components/schemas/GoogleContact" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_page_token": { "type": "string" },
+          "total_size": { "type": "integer" }
+        },
+        "type": "object"
+      },
+      "Project": {
+        "title": "Project Schema",
+        "description": "Project information including details, status, dates, location and tags",
+        "properties": {
+          "addressLine1": {
+            "example": "123 Main St",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "addressLine2": {
+            "example": "Suite 100",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "budget": { "example": 10000.5, "minimum": 0, "type": "number" },
+          "city": { "example": "New York", "maxLength": 255, "type": "string" },
+          "country": {
+            "example": "US",
+            "format": "iso-3166-1-alpha-2",
+            "pattern": "^[A-Z]{2}$",
+            "type": "string"
+          },
+          "createdAt": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "example": "Detailed project description",
+            "maxLength": 1000,
+            "type": "string"
+          },
+          "endDate": {
+            "example": "2024-12-31T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "example": "My Project",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "projectId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "startDate": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "stateProvince": {
+            "example": "NY",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "status": {
+            "enum": ["ongoing", "completed", "canceled"],
+            "example": "ongoing",
+            "type": "string"
+          },
+          "tags": {
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ],
+            "items": { "format": "uuid", "type": "string" },
+            "maxItems": 10,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "updatedAt": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "website": {
+            "example": "https://example.com",
+            "format": "uri",
+            "type": "string"
+          },
+          "zipPostalCode": {
+            "example": "10001",
+            "format": "zip-code",
+            "pattern": "^\\d{5}(?:[-\\s]\\d{4})?$",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ProjectCreatePayload": {
+        "title": "ProjectCreatePayload Schema",
+        "description": "Payload for creating a new project",
+        "properties": {
+          "addressLine1": {
+            "example": "123 Main St",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "example": "Suite 100",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "budget": {
+            "example": 10000.5,
+            "minimum": 0,
+            "type": "number",
+            "nullable": true
+          },
+          "city": {
+            "example": "New York",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "example": "US",
+            "format": "iso-3166-1-alpha-2",
+            "pattern": "^[A-Z]{2}$",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "example": "Detailed project description",
+            "maxLength": 1000,
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "example": "2024-12-31T00:00:00Z",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "example": "My Project",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "stateProvince": {
+            "example": "NY",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "default": "ongoing",
+            "enum": ["ongoing", "completed", "canceled"],
+            "example": "ongoing",
+            "type": "string"
+          },
+          "tags": {
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ],
+            "items": { "format": "uuid", "type": "string" },
+            "maxItems": 10,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "website": {
+            "example": "https://example.com",
+            "format": "uri",
+            "type": "string",
+            "nullable": true
+          },
+          "zipPostalCode": {
+            "example": "10001",
+            "format": "zip-code",
+            "pattern": "^\\d{5}(?:[-\\s]\\d{4})?$",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["name", "status"],
+        "type": "object"
+      },
+      "ProjectUpdatePayload": {
+        "title": "ProjectUpdatePayload Schema",
+        "description": "Payload for updating an existing project",
+        "properties": {
+          "addressLine1": {
+            "example": "123 Main St",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "example": "Suite 100",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "budget": {
+            "example": 10000.5,
+            "minimum": 0,
+            "type": "number",
+            "nullable": true
+          },
+          "city": {
+            "example": "New York",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "example": "US",
+            "format": "iso-3166-1-alpha-2",
+            "pattern": "^[A-Z]{2}$",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "example": "Detailed project description",
+            "maxLength": 1000,
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "example": "2024-12-31T00:00:00Z",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "example": "My Project",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "stateProvince": {
+            "example": "NY",
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "enum": ["ongoing", "completed", "canceled"],
+            "example": "ongoing",
+            "type": "string"
+          },
+          "tags": {
+            "example": [
+              "123e4567-e89b-12d3-a456-426614174000",
+              "123e4567-e89b-12d3-a456-426614174001"
+            ],
+            "items": { "format": "uuid", "type": "string" },
+            "maxItems": 10,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "website": {
+            "example": "https://example.com",
+            "format": "uri",
+            "type": "string",
+            "nullable": true
+          },
+          "zipPostalCode": {
+            "example": "10001",
+            "format": "zip-code",
+            "pattern": "^\\d{5}(?:[-\\s]\\d{4})?$",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "type": "object"
+      },
+      "Tag": {
+        "title": "Tag Schema",
+        "description": "Tag information including name, color and metadata",
+        "properties": {
+          "color": {
+            "example": "#FF5733",
+            "format": "hex-color",
+            "type": "string"
+          },
+          "createdAt": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "example": "Important",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "tagId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "updatedAt": {
+            "example": "2024-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "TagCreatePayload": {
+        "title": "TagCreatePayload Schema",
+        "description": "Payload for creating a new tag with name and optional color",
+        "properties": {
+          "color": {
+            "example": "#FF5733",
+            "format": "hex-color",
+            "type": "string"
+          },
+          "name": {
+            "example": "Important",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["name"],
+        "type": "object"
+      },
+      "TagUpdatePayload": {
+        "title": "TagUpdatePayload Schema",
+        "description": "Payload for updating an existing tag's name and color",
+        "properties": {
+          "color": {
+            "example": "#FF5733",
+            "format": "hex-color",
+            "type": "string"
+          },
+          "name": {
+            "example": "Important",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "User": {
+        "title": "User Schema",
+        "description": "User profile information",
+        "properties": {
+          "addressLine1": { "example": "123 Main St", "type": "string" },
+          "addressLine2": { "example": "Apt 4B", "type": "string" },
+          "city": { "example": "New York", "type": "string" },
+          "clerkExUserId": { "example": "user_123", "type": "string" },
+          "country": { "example": "US", "type": "string" },
+          "createdAt": { "example": "2023-01-01T00:00:00Z", "type": "string" },
+          "email": { "example": "john@example.com", "type": "string" },
+          "id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          },
+          "name": { "example": "John Doe", "type": "string" },
+          "stateProvince": { "example": "NY", "type": "string" },
+          "updatedAt": { "example": "2023-01-01T00:00:00Z", "type": "string" },
+          "zipPostalCode": { "example": "10001", "type": "string" }
+        },
+        "type": "object"
+      },
+      "Wallet": {
+        "title": "Wallet Schema",
+        "description": "A wallet entity",
+        "properties": {
+          "balance": { "example": 100.5, "type": "number" },
+          "createdAt": { "example": "2023-01-01T00:00:00Z", "type": "string" },
+          "currency": { "example": "USD", "type": "string" },
+          "name": { "example": "My Wallet", "type": "string" },
+          "projectId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          },
+          "tags": {
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "updatedAt": { "example": "2023-01-01T00:00:00Z", "type": "string" },
+          "userId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          },
+          "walletId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "WalletCreatePayload": {
+        "title": "WalletCreatePayload Schema",
+        "description": "Request payload for creating a new wallet",
+        "properties": {
+          "balance": { "example": 100.5, "type": "number" },
+          "currency": { "example": "USD", "type": "string" },
+          "name": { "example": "My Wallet", "type": "string" },
+          "projectId": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          },
+          "tags": {
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "required": ["currency", "name"],
+        "type": "object"
+      },
+      "WalletUpdatePayload": {
+        "title": "WalletUpdatePayload Schema",
+        "properties": {
+          "balance": { "type": "number" },
+          "currency": { "type": "string" },
+          "name": { "type": "string" },
+          "projectId": { "type": "string" },
+          "tags": {
+            "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "description": "Bearer token authentication",
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "contact": { "email": "support@example.com", "name": "API Support" },
+    "description": "REST API for expense tracking application with user management",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "termsOfService": "http://swagger.io/terms/",
+    "title": "Expense Tracker API",
+    "version": "1.0"
+  },
+  "externalDocs": { "description": "", "url": "" },
+  "paths": {
+    "/contacts": {
+      "get": {
+        "description": "Returns a paginated list of Contacts",
+        "operationId": "ListContactsPaginated",
+        "parameters": [
+          {
+            "description": "Number of Contacts to return",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Token for the next page",
+            "in": "query",
+            "name": "next_token",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "List Contacts with pagination",
+        "tags": ["Contacts"]
+      },
+      "post": {
+        "description": "Creates a new Contact for the authenticated user",
+        "operationId": "CreateContact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContactCreatePayload" }
+            }
+          },
+          "description": "Contact creation request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create a new Contact",
+        "tags": ["Contacts"]
+      }
+    },
+    "/contacts/search": {
+      "get": {
+        "description": "Searches for Contacts based on a query string",
+        "operationId": "SearchContacts",
+        "parameters": [
+          {
+            "description": "Search query",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": { "maxLength": 100, "minLength": 1, "type": "string" }
+          },
+          {
+            "description": "Maximum number of results",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Search Contacts",
+        "tags": ["Contacts"]
+      }
+    },
+    "/contacts/{id}": {
+      "delete": {
+        "description": "Deletes a Contact by ID",
+        "operationId": "DeleteContact",
+        "parameters": [
+          {
+            "description": "Contact ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete a Contact",
+        "tags": ["Contacts"]
+      },
+      "get": {
+        "description": "Retrieves a Contact by ID",
+        "operationId": "GetContact",
+        "parameters": [
+          {
+            "description": "Contact ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get a Contact",
+        "tags": ["Contacts"]
+      },
+      "put": {
+        "description": "Updates an existing Contact",
+        "operationId": "UpdateContact",
+        "parameters": [
+          {
+            "description": "Contact ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContactUpdatePayload" }
+            }
+          },
+          "description": "Contact update request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update a Contact",
+        "tags": ["Contacts"]
+      }
+    },
+    "/project/search": {
+      "get": {
+        "description": "Searches for project based on a query string",
+        "operationId": "SearchProjects",
+        "parameters": [
+          {
+            "description": "Search query",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": { "maxLength": 100, "minLength": 1, "type": "string" }
+          },
+          {
+            "description": "Maximum number of results",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Search project",
+        "tags": ["Projects"]
+      }
+    },
+    "/projects": {
+      "get": {
+        "description": "Returns a paginated list of projects",
+        "operationId": "ListProjectsPaginated",
+        "parameters": [
+          {
+            "description": "Number of projects to return",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Token for the next page",
+            "in": "query",
+            "name": "next_token",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "List projects with pagination",
+        "tags": ["Projects"]
+      },
+      "post": {
+        "description": "Creates a new project for the authenticated user",
+        "operationId": "CreateProject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProjectCreatePayload" }
+            }
+          },
+          "description": "project creation request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create a new project",
+        "tags": ["Projects"]
+      }
+    },
+    "/projects/{id}": {
+      "delete": {
+        "description": "Deletes a project by ID",
+        "operationId": "DeleteProject",
+        "parameters": [
+          {
+            "description": "project ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete a project",
+        "tags": ["Projects"]
+      },
+      "get": {
+        "description": "Retrieves a project by ID",
+        "operationId": "GetProject",
+        "parameters": [
+          {
+            "description": "project ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get a project",
+        "tags": ["Projects"]
+      },
+      "put": {
+        "description": "Updates an existing project",
+        "operationId": "UpdateProject",
+        "parameters": [
+          {
+            "description": "project ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProjectUpdatePayload" }
+            }
+          },
+          "description": "project update request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update a project",
+        "tags": ["Projects"]
+      }
+    },
+    "/projects/{project_id}/wallets": {
+      "get": {
+        "description": "Retrieves all wallets associated with a specific project",
+        "operationId": "GetProjectWallets",
+        "parameters": [
+          {
+            "description": "Project ID",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get project wallets",
+        "tags": ["Projects"]
+      }
+    },
+    "/tags": {
+      "delete": {
+        "description": "Deletes all tags for the authenticated user",
+        "operationId": "DeleteUserTags",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete all user tags",
+        "tags": ["Tags"]
+      },
+      "get": {
+        "description": "Returns a list of Tags",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "List Tags",
+        "tags": ["Tags"]
+      },
+      "post": {
+        "description": "Creates a new tag for the authenticated user",
+        "operationId": "CreateTag",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TagCreatePayload" }
+            }
+          },
+          "description": "Tag creation request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create a new tag",
+        "tags": ["Tags"]
+      }
+    },
+    "/tags/{id}": {
+      "delete": {
+        "description": "Deletes a tag by ID",
+        "operationId": "DeleteTag",
+        "parameters": [
+          {
+            "description": "Tag ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete a tag",
+        "tags": ["Tags"]
+      },
+      "get": {
+        "description": "Retrieves a tag by ID",
+        "operationId": "GetTag",
+        "parameters": [
+          {
+            "description": "Tag ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get a tag",
+        "tags": ["Tags"]
+      },
+      "put": {
+        "description": "Updates an existing tag",
+        "operationId": "UpdateTag",
+        "parameters": [
+          {
+            "description": "Tag ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TagUpdatePayload" }
+            }
+          },
+          "description": "Tag update request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update a tag",
+        "tags": ["Tags"]
+      }
+    },
+    "/users/contacts": {
+      "get": {
+        "description": "Retrieves the authenticated user's Google contacts with optional pagination",
+        "operationId": "GetUserContacts",
+        "parameters": [
+          {
+            "description": "Page token for pagination",
+            "in": "query",
+            "name": "pageToken",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "x-badges": [
+            { "color": "purple", "name": "External", "position": "before" }
+          ]
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get user's Google contacts",
+        "tags": ["Users"]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "description": "Retrieves the profile of the currently authenticated user",
+        "operationId": "GetUser",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get authenticated user profile",
+        "tags": ["Users"]
+      }
+    },
+    "/wallets": {
+      "get": {
+        "description": "Returns a paginated list of wallets",
+        "operationId": "ListWalletsPaginated",
+        "parameters": [
+          {
+            "description": "Number of wallets to return",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Token for the next page",
+            "in": "query",
+            "name": "next_token",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "List wallets with pagination",
+        "tags": ["Wallets"]
+      },
+      "post": {
+        "description": "Creates a new wallet for the authenticated user",
+        "operationId": "CreateWallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WalletCreatePayload" }
+            }
+          },
+          "description": "Wallet creation request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create a new wallet",
+        "tags": ["Wallets"]
+      }
+    },
+    "/wallets/search": {
+      "get": {
+        "description": "Searches for wallets based on a query string",
+        "operationId": "SearchWallets",
+        "parameters": [
+          {
+            "description": "Search query",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": { "maxLength": 100, "minLength": 1, "type": "string" }
+          },
+          {
+            "description": "Maximum number of results",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Search wallets",
+        "tags": ["Wallets"]
+      }
+    },
+    "/wallets/{id}": {
+      "delete": {
+        "description": "Deletes a wallet by ID",
+        "operationId": "DeleteWallet",
+        "parameters": [
+          {
+            "description": "Wallet ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete a wallet",
+        "tags": ["Wallets"]
+      },
+      "get": {
+        "description": "Retrieves a wallet by ID",
+        "operationId": "GetWallet",
+        "parameters": [
+          {
+            "description": "Wallet ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get a wallet",
+        "tags": ["Wallets"]
+      },
+      "put": {
+        "description": "Updates an existing wallet",
+        "operationId": "UpdateWallet",
+        "parameters": [
+          {
+            "description": "Wallet ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WalletUpdatePayload" }
+            }
+          },
+          "description": "Wallet update request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/data" }],
+                  "description": "Standard API response wrapper",
+                  "properties": {
+                    "data": {},
+                    "message": {
+                      "enum": [
+                        "Success",
+                        "Resource created successfully",
+                        "Resource updated successfully",
+                        "Resource deleted successfully"
+                      ],
+                      "example": "Success",
+                      "type": "string"
+                    },
+                    "meta": {
+                      "properties": {
+                        "count": { "type": "integer" },
+                        "limit": { "type": "integer" },
+                        "next_token": { "type": "string" },
+                        "query": { "type": "string" }
+                      },
+                      "type": "object"
+                    },
+                    "status": {
+                      "enum": [200, 202, 204],
+                      "example": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update a wallet",
+        "tags": ["Wallets"]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [{ "url": "localhost:8080/api/v1" }]
+}
