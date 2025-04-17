@@ -1,0 +1,16 @@
+"type: feature":
+  - "internal/**/types/*.go"
+
+"database":
+  - "internal/db/**/*"
+  - "migrations/**/*"
+
+"📖 documentation":
+  - "docs/**/*"
+  - "*.md"
+
+"tests":
+  - "**/*_test.go"
+
+"CI/CD":
+  - ".github/**/*"

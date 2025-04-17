@@ -1,0 +1,119 @@
+name: 🛠️ Development Task
+description: Track code changes, refactoring, or new features with associated branch names
+title: "[DEV] <description>"
+labels:
+  - "🚦 status: awaiting triage"
+  - "📝 type: ${{ (contains(body.change_type, 'feature') && '⭐ type: feature') || (contains(body.change_type, 'bugfix') && '🐛 type: bug') || (contains(body.change_type, 'refactor') && '♻️ type: refactor') || (contains(body.change_type, 'chore') && '🔧 type: chore') }}"
+body:
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Change Type
+      description: What type of code change are you planning?
+      options:
+        - ⭐ feature (New functionality)
+        - 🐛 bugfix (Fix an existing issue)
+        - ♻️ refactor (Code improvement without changing functionality)
+        - 🔧 chore (Maintenance tasks, dependencies, etc)
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: branch_name
+    attributes:
+      label: Branch Name
+      description: "The branch name will follow the pattern: type/#issue-description (e.g., feature/#42-add-user-authentication)"
+      placeholder: "Will be auto-generated after issue creation"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Change Description
+      description: Provide a clear and concise description of the code changes you plan to make
+      placeholder: "Describe what you're going to change and why..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation_details
+    attributes:
+      label: Implementation Details
+      description: Describe how you plan to implement these changes
+      placeholder: |
+        - Files that will be modified
+        - New components/functions to be added
+        - Dependencies that need to be updated
+        - Database changes required
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: testing_strategy
+    attributes:
+      label: Testing Strategy
+      description: Select the types of testing required for this change
+      options:
+        - label: Unit tests will be added/modified
+          required: false
+        - label: Integration tests will be added/modified
+          required: false
+        - label: API endpoint tests will be added/modified
+          required: false
+        - label: Database migration tests will be added/modified
+          required: false
+        - label: Manual testing will be performed
+          required: true
+        - label: Documentation will be updated
+          required: false
+
+  - type: textarea
+    id: testing_notes
+    attributes:
+      label: Additional Testing Notes
+      description: Provide any additional details about your testing approach
+      placeholder: |
+        - Specific test cases to be added
+        - Edge cases to consider
+        - Manual testing steps
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Implementation Checklist
+      description: Before submitting this issue, please confirm the following
+      options:
+        - label: I have checked for similar existing issues (open and closed)
+          required: true
+        - label: I have considered the impact on existing functionality
+          required: true
+        - label: I have reviewed the project's coding standards
+          required: true
+
+  - type: dropdown
+    id: assignee
+    attributes:
+      label: Will you implement this change?
+      multiple: false
+      options:
+        - "Yes"
+        - "No"
+      default: 0
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Branch Naming Convention
+        After this issue is created, use the following branch name format:
+        - For features: `feature/#<issue-number>-<description>`
+        - For bugfixes: `bugfix/#<issue-number>-<description>`
+        - For refactoring: `refactor/#<issue-number>-<description>`
+        - For chores: `chore/#<issue-number>-<description>`
+
+        Example: `feature/#42-add-user-authentication`
